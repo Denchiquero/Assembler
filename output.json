@@ -1,0 +1,38 @@
+[
+  {
+    "opcode": "load_const",
+    "A": 56,
+    "B": 10,
+    "C": 65535
+  },
+  {
+    "opcode": "write_mem",
+    "A": 54,
+    "B": 10,
+    "C": 0
+  },
+  {
+    "opcode": "load_const",
+    "A": 56,
+    "B": 11,
+    "C": 1
+  },
+  {
+    "opcode": "write_mem",
+    "A": 54,
+    "B": 11,
+    "C": 1
+  },
+  {
+    "opcode": "not",
+    "A": 59,
+    "B": 10,
+    "C": 2
+  },
+  {
+    "opcode": "not",
+    "A": 59,
+    "B": 11,
+    "C": 3
+  }
+]

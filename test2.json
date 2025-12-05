@@ -1,0 +1,7 @@
+[
+  {
+    "opcode": "read_mem",
+    "src_reg": 111,
+    "dest_reg": 117
+  }
+]

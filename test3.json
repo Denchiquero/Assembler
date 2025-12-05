@@ -1,0 +1,7 @@
+[
+  {
+    "opcode": "write_mem",
+    "src_reg": 45,
+    "dest_addr": 298
+  }
+]

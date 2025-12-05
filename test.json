@@ -1,0 +1,8 @@
+[
+    {"opcode": "load_const", "dest_reg": 10, "value": 65535},
+    {"opcode": "write_mem", "src_reg": 10, "dest_addr": 0},
+    {"opcode": "load_const", "dest_reg": 11, "value": 1},
+    {"opcode": "write_mem", "src_reg": 11, "dest_addr": 1},
+    {"opcode": "not", "src_reg": 10, "dest_addr": 2},
+    {"opcode": "not", "src_reg": 11, "dest_addr": 3}
+]

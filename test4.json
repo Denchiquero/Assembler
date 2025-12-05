@@ -1,0 +1,7 @@
+[
+  {
+    "opcode": "not",
+    "src_reg": 7,
+    "dest_addr": 893
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "opcode": "load_const",
+    "dest_reg": 47,
+    "value": 435
+  }
+]

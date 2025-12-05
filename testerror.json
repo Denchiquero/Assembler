@@ -1,0 +1,56 @@
+[
+  {
+    "dest_reg": 10,
+    "value": 100
+  },
+
+  {
+    "opcode": "unknown_op",
+    "dest_reg": 1,
+    "value": 100
+  },
+
+  {
+    "opcode": "load_const"
+  },
+
+  {
+    "opcode": "load_const",
+    "dest_reg": 200,
+    "value": 100
+  },
+
+  {
+    "opcode": "load_const",
+    "dest_reg": -5,
+    "value": 100
+  },
+
+  {
+    "opcode": "load_const",
+    "dest_reg": 1,
+    "value": 100000000
+  },
+
+  {
+    "opcode": "read_mem",
+    "src_reg": 10
+  },
+
+  {
+    "opcode": "write_mem",
+    "dest_addr": 100
+  },
+
+  {
+    "opcode": "write_mem",
+    "src_reg": 1,
+    "dest_addr": 10000
+  },
+
+  {
+    "opcode": "load_const",
+    "dest_reg": "not_a_number",
+    "value": 100
+  }
+]
