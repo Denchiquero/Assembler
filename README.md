@@ -300,3 +300,20 @@ Error message (if it is)
 
 ![img_3.png](img_3.png)
 
+## Постановка задачи этапа 4
+
+- Добавить выполнение операции побитового НЕ
+- Написать тест-программу
+
+Команда НЕ была реализована ранее, были добавлены тесты для проверки корректности ее работоспособности
+
+`python main.py --create-not-test`
+`python main.py not_test.json not_test.bin`
+`python main.py --run not_test.bin not_dump.xml 90 110`
+
+Вывод
+
+![img_4.png](img_4.png)
+![img_5.png](img_5.png)
+
+
