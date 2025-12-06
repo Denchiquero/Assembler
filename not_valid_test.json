@@ -1,0 +1,102 @@
+[
+  {
+    "opcode": "load_const",
+    "dest_reg": 1,
+    "value": 0
+  },
+  {
+    "opcode": "not",
+    "src_reg": 1,
+    "dest_addr": 100
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 2,
+    "value": 33554431
+  },
+  {
+    "opcode": "not",
+    "src_reg": 2,
+    "dest_addr": 101
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 3,
+    "value": 11184810
+  },
+  {
+    "opcode": "not",
+    "src_reg": 3,
+    "dest_addr": 102
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 4,
+    "value": 22369621
+  },
+  {
+    "opcode": "not",
+    "src_reg": 4,
+    "dest_addr": 103
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 5,
+    "value": 65535
+  },
+  {
+    "opcode": "not",
+    "src_reg": 5,
+    "dest_addr": 104
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 10,
+    "value": 100
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 11,
+    "value": 101
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 12,
+    "value": 102
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 13,
+    "value": 103
+  },
+  {
+    "opcode": "load_const",
+    "dest_reg": 14,
+    "value": 104
+  },
+  {
+    "opcode": "read_mem",
+    "src_reg": 10,
+    "dest_reg": 20
+  },
+  {
+    "opcode": "read_mem",
+    "src_reg": 11,
+    "dest_reg": 21
+  },
+  {
+    "opcode": "read_mem",
+    "src_reg": 12,
+    "dest_reg": 22
+  },
+  {
+    "opcode": "read_mem",
+    "src_reg": 13,
+    "dest_reg": 23
+  },
+  {
+    "opcode": "read_mem",
+    "src_reg": 14,
+    "dest_reg": 24
+  }
+]

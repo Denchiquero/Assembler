@@ -134,7 +134,7 @@ def verify_test_results():
 
 
 def interpreter_main():
-    """Основная функция интерпретатора"""
+
     if len(sys.argv) < 5:
         print("Usage: python assembler.py --run <binary_file> <dump_file> <start_addr> <end_addr>")
         print("Example: python assembler.py --run program.bin dump.xml 0 100")
@@ -169,6 +169,58 @@ def interpreter_main():
             print(f"  R[{i}] = {val} (0x{val:X})")
 
 
+def create_valid_not_test():
+
+    test_program = [
+
+        # Тест 1: NOT 0
+        {"opcode": "load_const", "dest_reg": 1, "value": 0},
+        {"opcode": "not", "src_reg": 1, "dest_addr": 100},
+
+        # Тест 2: NOT максимального 25-битного значения
+        {"opcode": "load_const", "dest_reg": 2, "value": 0x1FFFFFF},  # 25 бит все 1
+        {"opcode": "not", "src_reg": 2, "dest_addr": 101},
+
+        # Тест 3: NOT паттерна 0101...
+        {"opcode": "load_const", "dest_reg": 3, "value": 0x0AAAAAA},  # 0101010...
+        {"opcode": "not", "src_reg": 3, "dest_addr": 102},
+
+        # Тест 4: NOT паттерна 1010...
+        {"opcode": "load_const", "dest_reg": 4, "value": 0x1555555},  # 1010101...
+        {"opcode": "not", "src_reg": 4, "dest_addr": 103},
+
+        # Тест 5: NOT младших 16 бит
+        {"opcode": "load_const", "dest_reg": 5, "value": 0x0000FFFF},
+        {"opcode": "not", "src_reg": 5, "dest_addr": 104},
+
+        # Проверяем результаты
+        {"opcode": "load_const", "dest_reg": 10, "value": 100},
+        {"opcode": "load_const", "dest_reg": 11, "value": 101},
+        {"opcode": "load_const", "dest_reg": 12, "value": 102},
+        {"opcode": "load_const", "dest_reg": 13, "value": 103},
+        {"opcode": "load_const", "dest_reg": 14, "value": 104},
+
+        {"opcode": "read_mem", "src_reg": 10, "dest_reg": 20},
+        {"opcode": "read_mem", "src_reg": 11, "dest_reg": 21},
+        {"opcode": "read_mem", "src_reg": 12, "dest_reg": 22},
+        {"opcode": "read_mem", "src_reg": 13, "dest_reg": 23},
+        {"opcode": "read_mem", "src_reg": 14, "dest_reg": 24}
+    ]
+
+    with open("not_valid_test.json", 'w', encoding='utf-8') as f:
+        json.dump(test_program, f, indent=2)
+
+    print("Valid NOT test created: not_valid_test.json")
+    print("\nТестируем в пределах 25 бит:")
+    print("  1. ~0 = 0xFFFFFFFF")
+    print("  2. ~0x1FFFFFF = 0xFE000000")
+    print("  3. ~0x0AAAAAA = 0xFF555555")
+    print("  4. ~0x1555555 = 0xFEAAAAAA")
+    print("  5. ~0x0000FFFF = 0xFFFF0000")
+
+    return True
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage options:")
@@ -197,6 +249,10 @@ def main():
 
     if sys.argv[1] == '--run':
         interpreter_main()
+        return
+
+    if sys.argv[1] == '--create-not-test':
+        create_valid_not_test()
         return
 
     input_file = sys.argv[1]
