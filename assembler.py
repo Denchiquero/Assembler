@@ -1,6 +1,4 @@
 import json
-import sys
-import os
 
 
 class Assembler:
@@ -186,7 +184,7 @@ class Assembler:
             print("-" * 40)
 
     def _print_binary_representation(self):
-        """Вывод бинарного представления в формате спецификации"""
+
         print("\nBinary representation:")
         print("-" * 50)
 
@@ -200,7 +198,7 @@ class Assembler:
 
             print(f"Command {i}: ", end="")
 
-            # Формат: 0xF8, 0x6B, 0x36, 0x00, 0x00 (big-endian как в спецификации)
+            # Формат: 0xF8, 0x6B, 0x36, 0x00, 0x00
             hex_bytes = [f"0x{b:02X}" for b in cmd_bytes]
             print(", ".join(hex_bytes))
 
@@ -229,7 +227,7 @@ class Assembler:
         self.binary_data = bytearray()
 
         for cmd in self.program:
-            # Собираем 40-битное значение (5 байт)
+            # Собираем 40-битное значение
             value = 0
 
             if cmd['opcode'] == 'load_const':
@@ -239,7 +237,7 @@ class Assembler:
                 value |= (cmd['B'] & 0x7F) << 6  # B занимает биты 6-12
                 value |= (cmd['C'] & 0x1FFFFFF) << 13  # C занимает биты 13-37 (25 бит)
                 # Неиспользуемые биты 38-39 = 0
-                # Сдвигаем влево на 0 бит (биты 38-39 уже в конце)
+                # Сдвигаем влево на 0 бит биты 38-39 уже в конце
 
             elif cmd['opcode'] == 'read_mem':
                 # read_mem: A(6) + B(7) + C(7) + zeros(13) + unused(7)
@@ -247,16 +245,16 @@ class Assembler:
                 value = (cmd['A'] & 0x3F)  # A занимает биты 0-5
                 value |= (cmd['B'] & 0x7F) << 6  # B занимает биты 6-12
                 value |= (cmd['C'] & 0x7F) << 13  # C занимает биты 13-19 (7 бит)
-                # Биты 20-37 = 0 (уже 0)
+                # Биты 20-37 = 0
                 # Неиспользуемые биты 38-39 = 0
 
             elif cmd['opcode'] == 'write_mem' or cmd['opcode'] == 'not':
                 # write_mem/not: A(6) + B(7) + C(13) + zeros(12) + unused(2)
                 # Биты: 0-5:A, 6-12:B, 13-25:C, 26-37:0, 38-39:0
-                value = (cmd['A'] & 0x3F)  # A занимает биты 0-5
-                value |= (cmd['B'] & 0x7F) << 6  # B занимает биты 6-12
-                value |= (cmd['C'] & 0x1FFF) << 13  # C занимает биты 13-25 (13 бит)
-                # Биты 26-37 = 0 (уже 0)
+                value = (cmd['A'] & 0x3F)  # биты 0-5
+                value |= (cmd['B'] & 0x7F) << 6  # биты 6-12
+                value |= (cmd['C'] & 0x1FFF) << 13  # биты 13-25 (13 бит)
+                # Биты 26-37 = 0
                 # Неиспользуемые биты 38-39 = 0
             else:
                 print(f"Unknown opcode: {cmd['opcode']}")
@@ -266,140 +264,3 @@ class Assembler:
             self.binary_data.extend(bytes_5)
 
         return True
-
-def create_test_files():
-
-    # Тест 1: Загрузка константы (A=56, B=47, C=435)
-    test1 = [
-        {"opcode": "load_const", "dest_reg": 47, "value": 435}
-    ]
-
-    # Тест 2: Чтение из памяти (A=62, B=111, C=117)
-    test2 = [
-        {"opcode": "read_mem", "src_reg": 111, "dest_reg": 117}
-    ]
-
-    # Тест 3: Запись в память (A=54, B=45, C=298)
-    test3 = [
-        {"opcode": "write_mem", "src_reg": 45, "dest_addr": 298}
-    ]
-
-    # Тест 4: Побитовое НЕ (A=59, B=7, C=893)
-    test4 = [
-        {"opcode": "not", "src_reg": 7, "dest_addr": 893}
-    ]
-
-    # Сохраняем тестовые файлы
-    tests = {
-        "test1.json": test1,
-        "test2.json": test2,
-        "test3.json": test3,
-        "test4.json": test4
-    }
-
-    for filename, content in tests.items():
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(content, f, indent=2, ensure_ascii=False)
-        print(f"Test file created: {filename}")
-
-
-def verify_test_results():
-    print("\n" + "=" * 60)
-    print("VERIFICATION OF UVM SPECIFICATION TESTS")
-    print("=" * 60)
-
-    tests = [
-        ("test1.json", "load_const", [0xF8, 0x6B, 0x36, 0x00, 0x00]),
-        ("test2.json", "read_mem", [0xFE, 0xBB, 0x0E, 0x00, 0x00]),
-        ("test3.json", "write_mem", [0x76, 0x4B, 0x25, 0x00, 0x00]),
-        ("test4.json", "not", [0xFB, 0xA1, 0x6F, 0x00, 0x00])
-    ]
-
-    all_passed = True
-
-    for test_file, cmd_name, expected_bytes in tests:
-        if not os.path.exists(test_file):
-            print(f"File {test_file} not found!")
-            print("Run 'python assembler.py --create-tests' first")
-            all_passed = False
-            continue
-
-        print(f"\nTesting {cmd_name}...")
-
-        # Запускаем ассемблер
-        assembler = Assembler()
-        binary_file = test_file.replace('.json', '.bin')
-
-        if assembler.assemble(test_file, binary_file, test_mode=False):
-            # Читаем сгенерированные байты
-            with open(binary_file, 'rb') as f:
-                generated_bytes = list(f.read())
-
-            # Сравниваем
-            if generated_bytes == expected_bytes:
-                print(f"  MATCH!")
-                print(f"  Bytes: {[f'0x{b:02X}' for b in generated_bytes]}")
-            else:
-                print(f"  NO MATCH!")
-                print(f"  Expected: {[f'0x{b:02X}' for b in expected_bytes]}")
-                print(f"  Got:      {[f'0x{b:02X}' for b in generated_bytes]}")
-                all_passed = False
-
-            # Удаляем временный файл
-            if os.path.exists(binary_file):
-                os.remove(binary_file)
-        else:
-            print(f"  Assembly error for {test_file}")
-            all_passed = False
-
-    print("\n" + "=" * 60)
-    if all_passed:
-        print("ALL TESTS PASSED!")
-    else:
-        print("SOME TESTS FAILED")
-        print("   This might be due to specification errors")
-    print("=" * 60)
-
-    return all_passed
-
-def main():
-
-    if len(sys.argv) < 2:
-        print("Usage: python assembler.py <input_file> <output_file> [--test]")
-        print("Example: python assembler.py program.json result.bin --test")
-        print("  --create-tests     Create test files from specification")
-        print("  --verify-tests     Verify binary output matches specification")
-        return
-
-    if sys.argv[1] == '--create-tests':
-        create_test_files()
-        return
-
-    if sys.argv[1] == '--verify-tests':
-        verify_test_results()  # НОВАЯ ФУНКЦИЯ
-        return
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    test_mode = '--test' in sys.argv
-
-    # Проверка существования входного файла
-    if not os.path.exists(input_file):
-        print(f"Error: file {input_file} not found")
-        return
-
-    # Создание и запуск ассемблера
-    assembler = Assembler()
-
-    if assembler.assemble(input_file, output_file, test_mode):
-        print(f"Assembly complete!")
-        print(f"Result is saved in {output_file}")
-        if test_mode:
-            print(f"Command assembly: {len(assembler.program)}")
-    else:
-        print("Assembly complete with errors")
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()

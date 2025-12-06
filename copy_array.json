@@ -1,0 +1,12 @@
+[
+  {"opcode": "load_const", "dest_reg": 1, "value": 100},
+  {"opcode": "load_const", "dest_reg": 2, "value": 200},
+  {"opcode": "write_mem", "src_reg": 1, "dest_addr": 50},
+  {"opcode": "write_mem", "src_reg": 2, "dest_addr": 51},
+
+  {"opcode": "load_const", "dest_reg": 10, "value": 50},
+  {"opcode": "load_const", "dest_reg": 11, "value": 51},
+
+  {"opcode": "read_mem", "src_reg": 10, "dest_reg": 3},
+  {"opcode": "read_mem", "src_reg": 11, "dest_reg": 4}
+]
